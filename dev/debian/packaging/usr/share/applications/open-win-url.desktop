@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name[en]=Open Windows Internet Shortcut
+Exec=/usr/bin/open-win-url %f
+Icon=text-html
+Terminal=false
+NoDisplay=true
+Categories=Network;
+MimeType=application/x-mswinurl;
