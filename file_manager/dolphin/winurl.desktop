@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+MimeType=inode/directory;
+Actions=createWinWeblink;
+X-KDE-Priority=TopLevel
+
+[Desktop Action createWinWeblink]
+Name=Create Windows Weblink
+Icon=text-html
+Exec=/usr/libexec/winurl/winurl-dolphin %f

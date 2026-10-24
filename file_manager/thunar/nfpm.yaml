@@ -1,0 +1,29 @@
+# Thunar extension: "Create Windows Weblink" context menu entry
+name: winurl-thunar
+arch: all
+platform: linux
+version: ${VERSION}
+maintainer: ${MAINTAINER}
+description: Thunar extension to create Windows web links (.url)
+section: utils
+priority: optional
+
+depends:
+  - winurl-core
+  - thunarx-python
+
+overrides:
+  rpm:
+    depends:
+      - winurl-core
+      - thunarx-python
+  archlinux:
+    depends:
+      - winurl-core
+      - thunarx-python
+
+contents:
+  - src: file_manager/thunar/create_win_weblink.py
+    dst: /usr/share/thunarx-python/extensions/winurl_create_win_weblink.py
+    file_info:
+      mode: 0644

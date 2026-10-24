@@ -1,0 +1,26 @@
+# `winurl` binary + desktop entry handling .url files
+name: winurl-core
+arch: ${ARCH}
+platform: linux
+version: ${VERSION}
+maintainer: ${MAINTAINER}
+description: Open Windows Internet Shortcut (.url) on default browser via xdg-open
+section: utils
+priority: optional
+
+depends:
+  - xdg-utils
+
+contents:
+  - src: target/release/winurl
+    dst: /usr/bin/winurl
+    file_info:
+      mode: 0755
+  - src: package/winurl.desktop
+    dst: /usr/share/applications/winurl.desktop
+    file_info:
+      mode: 0644
+
+scripts:
+  postinstall: package/scripts/update-desktop-db.sh
+  postremove: package/scripts/update-desktop-db.sh

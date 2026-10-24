@@ -1,0 +1,31 @@
+name: winurl-nautilus
+arch: all
+platform: linux
+version: ${VERSION}
+maintainer: ${MAINTAINER}
+description: Nautilus extension to create Windows web links (.url)
+section: utils
+priority: optional
+
+depends:
+  - winurl-core
+  - python3-nautilus
+  - gir1.2-adw-1
+
+overrides:
+  rpm:
+    depends:
+      - winurl-core
+      - nautilus-python
+      - libadwaita
+  archlinux:
+    depends:
+      - winurl-core
+      - python-nautilus
+      - libadwaita
+
+contents:
+  - src: file_manager/nautilus/create_win_weblink.py
+    dst: /usr/share/nautilus-python/extensions/winurl_create_win_weblink.py
+    file_info:
+      mode: 0644

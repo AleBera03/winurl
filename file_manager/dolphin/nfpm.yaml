@@ -1,0 +1,33 @@
+# Dolphin extension: "Create Windows Weblink" context menu entry
+name: winurl-dolphin
+arch: all
+platform: linux
+version: ${VERSION}
+maintainer: ${MAINTAINER}
+description: Dolphin extension to create Windows web links (.url)
+section: utils
+priority: optional
+
+depends:
+  - winurl-core
+  - kdialog
+
+overrides:
+  rpm:
+    depends:
+      - winurl-core
+      - kdialog
+  archlinux:
+    depends:
+      - winurl-core
+      - kdialog
+
+contents:
+  - src: file_manager/dolphin/winurl.desktop
+    dst: /usr/share/kio/servicemenus/winurl.desktop
+    file_info:
+      mode: 0644
+  - src: file_manager/dolphin/winurl-dolphin
+    dst: /usr/libexec/winurl/winurl-dolphin
+    file_info:
+      mode: 0755

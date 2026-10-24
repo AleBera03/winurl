@@ -1,0 +1,29 @@
+# Nemo extension: "Create Windows Weblink" context menu entry
+name: winurl-nemo
+arch: all
+platform: linux
+version: ${VERSION}
+maintainer: ${MAINTAINER}
+description: Nemo extension to create Windows web links (.url)
+section: utils
+priority: optional
+
+depends:
+  - winurl-core
+  - nemo-python
+
+overrides:
+  rpm:
+    depends:
+      - winurl-core
+      - nemo-python
+  archlinux:
+    depends:
+      - winurl-core
+      - nemo-python
+
+contents:
+  - src: file_manager/nemo/create_win_weblink.py
+    dst: /usr/share/nemo-python/extensions/winurl_create_win_weblink.py
+    file_info:
+      mode: 0644

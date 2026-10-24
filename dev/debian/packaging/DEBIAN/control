@@ -1,8 +1,0 @@
-Package: open-win-url
-Version: 0.1.0
-Section: utils
-Priority: optional
-Architecture: amd64
-Depends: libc6, xdg-utils
-Maintainer: Alessandro Michele Berardi <aleberardi.03to@gmail.com>
-Description: Open Windows web links on default browser via xdg-open

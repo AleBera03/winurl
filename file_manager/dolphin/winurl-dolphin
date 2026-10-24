@@ -1,0 +1,11 @@
+#!/bin/sh
+# Dolphin service menu helper: ask URL and name via kdialog, then create the .url file
+folder="${1:?folder required}"
+title="New web shortcut"
+
+url=$(kdialog --title "$title" --inputbox "URL") || exit 0
+name=$(kdialog --title "$title" --inputbox "Name (optional)") || exit 0
+
+if ! err=$(winurl --create "$folder" "$url" "$name" 2>&1 >/dev/null); then
+    kdialog --title "Impossible to create the link" --error "$err"
+fi
