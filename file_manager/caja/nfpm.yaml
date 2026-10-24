@@ -1,0 +1,29 @@
+# Caja extension: "Create Windows Weblink" context menu entry
+name: winurl-caja
+arch: all
+platform: linux
+version: ${VERSION}
+maintainer: ${MAINTAINER}
+description: Caja extension to create Windows web links (.url)
+section: utils
+priority: optional
+
+depends:
+  - winurl-core
+  - python3-caja
+
+overrides:
+  rpm:
+    depends:
+      - winurl-core
+      - python3-caja
+  archlinux:
+    depends:
+      - winurl-core
+      - python-caja
+
+contents:
+  - src: file_manager/caja/create_win_weblink.py
+    dst: /usr/share/caja-python/extensions/winurl_create_win_weblink.py
+    file_info:
+      mode: 0644

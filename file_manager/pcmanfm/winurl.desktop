@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Action
+Name=Create Windows Weblink
+Tooltip=Create a Windows .url shortcut in the selected folder
+Icon=text-html
+Profiles=folder;
+
+[X-Action-Profile folder]
+MimeTypes=inode/directory;
+SelectionCount==1
+Exec=/usr/libexec/winurl/winurl-pcmanfm %f

@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name[en]=Open Windows Internet Shortcut
-Exec=/usr/bin/open-win-url %f
+Exec=/usr/bin/winurl %f
 Icon=text-html
 Terminal=false
 NoDisplay=true

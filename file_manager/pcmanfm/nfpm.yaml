@@ -1,0 +1,33 @@
+# PCManFM extension: "Create Windows Weblink" context menu entry
+name: winurl-pcmanfm
+arch: all
+platform: linux
+version: ${VERSION}
+maintainer: ${MAINTAINER}
+description: PCManFM extension to create Windows web links (.url)
+section: utils
+priority: optional
+
+depends:
+  - winurl-core
+  - zenity
+
+overrides:
+  rpm:
+    depends:
+      - winurl-core
+      - zenity
+  archlinux:
+    depends:
+      - winurl-core
+      - zenity
+
+contents:
+  - src: file_manager/pcmanfm/winurl.desktop
+    dst: /usr/share/file-manager/actions/winurl.desktop
+    file_info:
+      mode: 0644
+  - src: file_manager/pcmanfm/winurl-pcmanfm
+    dst: /usr/libexec/winurl/winurl-pcmanfm
+    file_info:
+      mode: 0755

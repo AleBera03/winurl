@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# PCManFM action helper: ask URL and name via zenity, then create the .url file
+folder="${1:?folder required}"
+sep="$(printf '\037')"
+
+form=$(zenity --forms --title="New web shortcut" \
+    --text="Create a Windows .url shortcut in the selected folder" \
+    --add-entry="URL" --add-entry="Name (optional)" \
+    --separator="$sep") || exit 0
+
+url="${form%%"$sep"*}"
+name="${form#*"$sep"}"
+
+if ! err=$(winurl --create "$folder" "$url" "$name" 2>&1 >/dev/null); then
+    zenity --error --title="Impossible to create the link" --text="$err"
+fi
