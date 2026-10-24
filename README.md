@@ -49,3 +49,20 @@ Deployment uses Github Release. In order to trigger `release.yml` github workflo
 just release MAJOR|MINOR|FIX
 ```
 following semver standard
+
+## Installation
+
+Download the tarball for your package format (`deb`, `rpm`, `archlinux`, `apk`) from [Releases](https://github.com/AleBera03/winurl/releases) and extract it:
+
+```
+tar -xzf winurl_<version>_<format>.tar.gz && cd winurl_<version>_<format>
+```
+
+Install the core package for your architecture (in `core/`), plus the extension for your file manager if you want it. For example, on Debian/Ubuntu with Nautilus:
+
+```
+sudo apt install ./core/winurl-core_*_amd64.deb ./winurl-nautilus_*.deb
+```
+
+> [!IMPORTANT] 
+> Right now, other format has not been test
