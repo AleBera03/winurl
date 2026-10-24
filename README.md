@@ -9,14 +9,14 @@ This simple script is able to read those files and open the contained url via [`
 Packages are built with [nfpm](https://nfpm.goreleaser.com/):
 
 | Package | Content | Tested |
-| --- | --- |
-| `winurl-core` | `winurl` binary + desktop entry that opens `.url` files |  |
-| `winurl-nautilus` | Nautilus extension (nautilus-python) |
-| `winurl-nemo` | Nemo extension (nemo-python) |
-| `winurl-caja` | Caja extension (caja-python) |
-| `winurl-thunar` | Thunar extension (thunarx-python) |
-| `winurl-dolphin` | Dolphin service menu (kdialog) |
-| `winurl-pcmanfm` | PCManFM action (zenity) |
+| --- | --- | --- |
+| `winurl-core` | `winurl` binary + desktop entry that opens `.url` files | :white_check_mark: |
+| `winurl-nautilus` | Nautilus extension (nautilus-python) | :white_check_mark: |
+| `winurl-nemo` | Nemo extension (nemo-python) | :x: |
+| `winurl-caja` | Caja extension (caja-python) | :x: |
+| `winurl-thunar` | Thunar extension (thunarx-python) | :x: |
+| `winurl-dolphin` | Dolphin service menu (kdialog) | :x: |
+| `winurl-pcmanfm` | PCManFM action (zenity) | :x: |
 
 File manager packages add a "Create Windows Weblink" context menu entry and depend on `winurl-core`, whose `winurl` binary writes the file:
 
