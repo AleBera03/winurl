@@ -42,3 +42,10 @@ just build deb rpm core nautilus    # only some formats and packages
 ```
 
 Packages are written to `package/build/`, e.g. `winurl-core_0.1.0_amd64.deb` and `winurl-nautilus_0.1.0_all.deb`.
+
+### Deployment
+Deployment uses Github Release. In order to trigger `release.yml` github workflow, run
+```
+just release MAJOR|MINOR|FIX
+```
+following semver standard

@@ -1,0 +1,115 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "*"
+
+env:
+  NFPM_VERSION: "2.43.0"
+  FILE_MANAGERS: nautilus dolphin nemo caja thunar pcmanfm
+  FULLNAME: ${{ vars.FULLNAME || github.repository_owner }}
+  EMAIL: ${{ vars.EMAIL || format('{0}@users.noreply.github.com', github.repository_owner) }}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check tag matches Cargo.toml version
+        id: version
+        run: |
+          version="$(grep -m1 '^version' Cargo.toml | cut -d'"' -f2)"
+          tag="${GITHUB_REF_NAME#v}"
+          if [ "$version" != "$tag" ]; then
+              echo "Tag '$GITHUB_REF_NAME' does not match Cargo.toml version '$version'" >&2
+              exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+  core:
+    name: core / ${{ matrix.packager }} / ${{ matrix.arch.name }}
+    needs: check
+    runs-on: ${{ matrix.arch.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        packager: [deb, rpm, archlinux, apk]
+        arch:
+          - { name: amd64, runner: ubuntu-24.04, nfpm: x86_64 }
+          - { name: arm64, runner: ubuntu-24.04-arm, nfpm: arm64 }
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Install nfpm
+        run: |
+          curl -sSfL "https://github.com/goreleaser/nfpm/releases/download/v${NFPM_VERSION}/nfpm_${NFPM_VERSION}_Linux_${{ matrix.arch.nfpm }}.tar.gz" \
+              | sudo tar -xz -C /usr/local/bin nfpm
+
+      - name: Build core package
+        run: ./package/build.sh ${{ matrix.packager }} core
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: core-${{ matrix.packager }}-${{ matrix.arch.name }}
+          path: package/build/*
+          if-no-files-found: error
+
+  file-managers:
+    name: file managers / ${{ matrix.packager }}
+    needs: check
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        packager: [deb, rpm, archlinux, apk]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install nfpm
+        run: |
+          curl -sSfL "https://github.com/goreleaser/nfpm/releases/download/v${NFPM_VERSION}/nfpm_${NFPM_VERSION}_Linux_x86_64.tar.gz" \
+              | sudo tar -xz -C /usr/local/bin nfpm
+
+      - name: Build file manager packages
+        run: ./package/build.sh ${{ matrix.packager }} $FILE_MANAGERS
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fm-${{ matrix.packager }}
+          path: package/build/*
+          if-no-files-found: error
+
+  release:
+    needs: [check, core, file-managers]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      VERSION: ${{ needs.check.outputs.version }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Create tarballs
+        run: |
+          mkdir -p dist
+          for packager in deb rpm archlinux apk; do
+              dir="winurl_${VERSION}_${packager}"
+              mkdir -p "stage/$dir/core"
+              cp artifacts/fm-"$packager"/* "stage/$dir/"
+              cp artifacts/core-"$packager"-*/* "stage/$dir/core/"
+              tar -czf "dist/$dir.tar.gz" -C stage "$dir"
+              tar -tzf "dist/$dir.tar.gz"
+          done
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.tar.gz
+          generate_release_notes: true
